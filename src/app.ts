@@ -24,9 +24,11 @@ app.get("/status", (request: Request, response: Response) => {
         var jsonOutput = '"STATUS":"Active"';
         let q = {"Status": "Running"};
         stdout.split("\n").forEach((item) => {
-            const formattedItem = item.replace(/\s+/g, " ").trim();
-            let keyVal = formattedItem.split(":");
-            jsonOutput += ',"' + keyVal[0].trim() + '":"' + keyVal[1].trim() + '"';
+            if ( item !== '' ){
+                const formattedItem = item.replace(/\s+/g, " ").trim();
+                let keyVal = formattedItem.split(":");
+                jsonOutput += ',"' + keyVal[0].trim() + '":"' + keyVal[1].trim() + '"';
+            }
         });
         response.send("{" + jsonOutput + "}");
 
