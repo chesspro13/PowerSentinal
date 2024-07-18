@@ -13,17 +13,23 @@ app.listen(PORT, () => {
 })
 
 app.get("/status", (request: Request, response: Response) => {
-    const status = {"status": "Running"}
-
-    const powerMonitor = exec('ls' ,
+    const powerMonitor :string= exec('apcaccess' ,
     (error: string, stdout: string, stderr: string) => {
         console.log(stdout);
         console.log(stderr);
         if (error !== null) {
             console.log(`exec error: ${error}`);
         }
-    });
 
-    response.send(status)
+        var jsonOutput = '"STATUS":"Active"';
+        let q = {"Status": "Running"};
+        stdout.split("\n").forEach((item) => {
+            const formattedItem = item.replace(/\s+/g, " ").trim();
+            let keyVal = formattedItem.split(":");
+            jsonOutput += ',"' + keyVal[0].trim() + '":"' + keyVal[1].trim() + '"';
+        });
+        response.send("{" + jsonOutput + "}");
+
+    });
 })
 
