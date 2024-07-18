@@ -1,19 +1,27 @@
 #!/bin/bash
 
+ipaddr = ""
+
 while true 
 do
-    battLevel=$(curl ***REMOVED***:27415/status | jq .BCHARGE)
+    status=$(curl "http://$ipaddr:27415/status" | jq .STATUS)
+    battLevel=$(curl "http://$ipaddr:27415/status" | jq .BCHARGE)
     battQuote=${battLevel// Percent/}
     percentage=${battQuote//\"/}
     level=${percentage%.*}
-    
-    echo "[$level]"
-    if (( level > 80 )); then
-        echo "Shutting down!"
-        shutdown now
-    else
-        echo "Battery level $level%"
-    fi
 
-    sleep 5
+    if [[ status == "ONBATT" ]]; then
+        
+        echo "[$level]"
+        if (( level < 80 )); then
+            echo "Shutting down!"
+            # shutdown now
+        else
+            echo "On battery! $level%"
+        fi
+
+        sleep 30
+    else
+        echo "Status: Normal"
+    fi
 done
