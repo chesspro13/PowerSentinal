@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "author": "chesspro13",
   "scripts": {
-    "start": "tsx watch src/app.ts",
+    "start-server": "tsx watch server_src/app.ts",
+    "start-client": "tsx watch client_src/app.ts",
     "build": "npx tsc"
   },
   "devDependencies": {
