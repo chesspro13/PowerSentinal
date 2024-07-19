@@ -1,11 +1,10 @@
 #!/bin/bash
-
-ipaddr = ""
+source ../.env
 
 while true 
 do
-    status=$(curl "http://$ipaddr:27415/status" | jq .STATUS)
-    battLevel=$(curl "http://$ipaddr:27415/status" | jq .BCHARGE)
+    status=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .STATUS)
+    battLevel=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .BCHARGE)
     battQuote=${battLevel// Percent/}
     percentage=${battQuote//\"/}
     level=${percentage%.*}
@@ -23,5 +22,6 @@ do
         sleep 30
     else
         echo "Status: Normal"
+        sleep 60
     fi
 done
