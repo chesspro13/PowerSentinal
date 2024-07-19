@@ -15,16 +15,9 @@ serverPackages()
     answer="${answer:-Y}"
     
     if [[ $answer =~ [Yy] ]]; then
-        echo "Installing APCUPSD"
+        echo "Installing APCUPSD and NodeJS"
         apt-get -y install apcupsd nodejs
-        echo "APCUPSD installed."
-
-        echo "Installing NVM"
-        # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        # echo "Configuring NVM"
-        # export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
-        echo "NVM installed."
+        echo "APCUPSD and NodeJS installed."
 
         
         read -p "Would you like build the service? [Y/n]: " answer
