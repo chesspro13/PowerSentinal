@@ -15,9 +15,9 @@ serverPackages()
     answer="${answer:-Y}"
     
     if [[ $answer =~ [Yy] ]]; then
-        echo "Installing APCUPSD and NodeJS"
-        apt-get -y install apcupsd nodejs
-        echo "APCUPSD and NodeJS installed."
+        echo "Installing APCUPSD, NodeJS, and UFW"
+        apt-get -y install apcupsd nodejs ufw
+        echo "APCUPSD, NodeJS, and UFW installed."
 
         
         read -p "Would you like build the service? [Y/n]: " answer
@@ -26,6 +26,12 @@ serverPackages()
             npm run build
 
             setupService "/usr/bin/nodejs $PWD/dist/app.js"
+        fi
+        
+        read -p "Would you like to allow port $PORT through ufw? [Y/n]: " answer
+        answer="${answer:-Y}"
+        if [[ $answer =~ [Yy] ]]; then
+            ufw allow "$PORT/tcp"
         fi
     fi
 }
