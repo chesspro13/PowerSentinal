@@ -32,7 +32,7 @@ serverPackages()
         if [[ $answer =~ [Yy] ]]; then    
             npm run build
 
-            setupService "/usr/bin/node $pwd/dist/app.js"
+            setupService "/usr/bin/nodejs $PWD/dist/app.js"
         fi
     fi
 }
@@ -73,6 +73,6 @@ read -p "Choose installation method: [server/s] | [client/c] " choice
 
 case $choice in
     server|S|s) serverPackages ;;
-    client|C|c) setupService "$pwd/client_src/watcher.sh" ;;
+    client|C|c) setupService "$PWD/client_src/watcher.sh" ;;
     *) echo "Invalid option" ;;
 esac
