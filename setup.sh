@@ -59,6 +59,8 @@ setupService() {
         if [[ $answer =~ [Yy] ]]; then
             systemctl start powersentinal.service
         fi
+
+        echo  $(systemctl status powersentinal.service)
     fi
 }
 
