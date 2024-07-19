@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import * as child from "child_process";
+import Database from "better-sqlite3"
 import express from "express";
 
 const app = express();
@@ -46,3 +47,6 @@ app.get("/status", (request: Request, response: Response) => {
         }
     );
 });
+
+const db = new Database("data/power_data.db");
+db.pragma("journal_mode = WAL");

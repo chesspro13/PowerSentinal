@@ -1,0 +1,45 @@
+const databaseTable = `
+    CREATE TABLE power_data (
+    ACTIVE boolean,
+    APC string,
+    DATE string,
+    HOSTNAME string,
+    VERSION string,
+    UPSNAME string,
+    CABLE string,
+    DRIVER string,
+    UPSMODE string,
+    STARTTIME string,
+    MODEL string,
+    STATUS string,
+    LINEV float,
+    LOADPCT float,
+    BCHARGE float,
+    TIMELEFT float,
+    MBATTCHG int,
+    MINTIMEL int,
+    MAXTIME int,
+    SENSE string,
+    LOTRANS float,
+    HITRANS float,
+    ALARMDEL string,
+    BATTV float,
+    LASTXFER string,
+    NUMXFERS int,
+    TONBATT int,
+    CUMONBATT int,
+    XOFFBATT string,
+    SELFTEST string,
+    STATFLAG string,
+    SERIALNO string,
+    BATTDATE string,
+    NOMINV float,
+    NOMBATTV float,
+    NOMPOWER int,
+    FIRMWARE string,
+    END APC: string.
+    
+    )
+`
+
+export default databaseTable;
