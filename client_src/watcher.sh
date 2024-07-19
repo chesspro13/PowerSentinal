@@ -3,7 +3,9 @@ source ../.env
 
 while true 
 do
-    echo "http://$IP_ADDRESS:$PORT/status"
+    echo "Pinging server at http://$IP_ADDRESS:$PORT/status"
+    echo $(curl "http://$IP_ADDRESS:$PORT/status")
+    
     statusWquotes=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .STATUS)
     status=${statusWquotes//\"/}
     battLevel=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .BCHARGE)
@@ -11,9 +13,10 @@ do
     percentage=${battQuote//\"/}
     level=${percentage%.*}
 
-    echo "$status"
+    echo "Status: [$status]"
+    echo "Battery: [$level]"
 
-    if [ $status == "ONBATT" ] 
+    if [ "$status" = "ONBATT" ]
     then
         if (( level < 80 )); then
             if [[ $MODE == "TESTING" ]]; then 
@@ -30,13 +33,13 @@ do
         fi
 
         sleep 30
-    elif [ $status == "ONLINE" ] 
+    elif [ "$status" = "ONLINE" ]
     then
         echo "Status: Normal"
         echo "Charge: $level%" 
         sleep 60
     else 
         echo "Status: Inactive"
-        sleep 60
+        sleep 5
     fi
 done

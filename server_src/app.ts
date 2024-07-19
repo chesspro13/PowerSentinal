@@ -25,7 +25,7 @@ app.get("/status", (request: Request, response: Response) => {
                 console.log(`exec error: ${error}`);
             }
 
-            var jsonOutput = "";
+            var jsonOutput = '"ACTIVE":"TRUE"';
             let q = { Status: "Running" };
             stdout
                 .toString()
