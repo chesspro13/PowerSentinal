@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
-const { exec } = require("child_process");
-
-const express = require("express");
+import * as child from "child_process";
+import express from "express";
 
 const app = express();
 app.use(express.json());
@@ -13,9 +12,13 @@ app.listen(PORT, () => {
 });
 
 app.get("/status", (request: Request, response: Response) => {
-    const powerMonitor: string = exec(
+    const powerMonitor = child.exec(
         "apcaccess",
-        (error: string, stdout: string, stderr: string) => {
+        (
+            error: child.ExecException | null,
+            stdout: string | Buffer,
+            stderr: string | Buffer
+        ) => {
             console.log(stdout);
             console.log(stderr);
             if (error !== null) {
@@ -24,18 +27,21 @@ app.get("/status", (request: Request, response: Response) => {
 
             var jsonOutput = '"STATUS":"Active"';
             let q = { Status: "Running" };
-            stdout.split("\n").forEach((item) => {
-                if (item !== "") {
-                    const formattedItem = item.replace(/\s+/g, " ").trim();
-                    let keyVal = formattedItem.split(":");
-                    jsonOutput +=
-                        ',"' +
-                        keyVal[0].trim() +
-                        '":"' +
-                        keyVal[1].trim() +
-                        '"';
-                }
-            });
+            stdout
+                .toString()
+                .split("\n")
+                .forEach((item) => {
+                    if (item !== "") {
+                        const formattedItem = item.replace(/\s+/g, " ").trim();
+                        let keyVal = formattedItem.split(":");
+                        jsonOutput +=
+                            ',"' +
+                            keyVal[0].trim() +
+                            '":"' +
+                            keyVal[1].trim() +
+                            '"';
+                    }
+                });
             response.send("{" + jsonOutput + "}");
         }
     );

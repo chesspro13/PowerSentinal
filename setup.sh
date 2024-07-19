@@ -5,52 +5,66 @@ if [ "$EUID" -ne 0 ]; then
     exit
 fi
 
+source .env
 
 serverPackages()
 {
     echo "The following packages are required for opperation: APCUPSD, NVM"
-    read -p "Install missing packages? [Y/n]: " answer
+    read -p "Begin the installation of dependencies? [Y/n]: " answer
     
     answer="${answer:-Y}"
     
     if [[ $answer =~ [Yy] ]]; then
-        apt-get install apcupsd
+        echo "Installing APCUPSD"
+        apt-get -y install apcupsd nodejs
+        echo "APCUPSD installed."
 
-        wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-        export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
-        [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        echo "Installing NVM"
+        # wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+        # echo "Configuring NVM"
+        # export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")"
+        # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
+        echo "NVM installed."
+
         
-        echo "Packages installed!"
+        read -p "Would you like build the service? [Y/n]: " answer
+        answer="${answer:-Y}"
+        if [[ $answer =~ [Yy] ]]; then    
+            npm run build
+
+            setupService "/usr/bin/node $pwd/dist/app.js"
+        fi
     fi
 }
 
-clientSetup() {
+setupService() {
     read -p "Would you like to setup a systemd service? [Y/n]: " answer
     answer="${answer:-Y}"
     if [[ $answer =~ [Yy] ]]; then        
         service="[Unit]
-            \nDescription=Watch up status to gracefully shutdown in case of prolonged power outage.\n
+            \nDescription=Watch up status to gracefully shutdown in case of prolonged power outage.
+            \nAfter=network.target\n
             \n
             \n[Service]
+            \nEnvironment=NODE_PORT=$PORT
             \nType=simple
-            \n
-            \nExecStart=$pwd/client_src/watcher.sh
+            \nExecStart=$1
             \nRestart=always
             \n
             \n[Install]
             \nWantedBy=multiuser.target"
-        echo -e $service > /etc/systemd/system/upsied.service
+        echo -e $service > /etc/systemd/system/powersentinal.service
 
-        read -p "Would you like upsied.service to start on boot [Y/n]: " answer
+        read -p "Would you like powersentinal.service to start on boot [Y/n]: " answer
         answer="${answer:-Y}"
         if [[ $answer =~ [Yy] ]]; then
-            systemctl enable upsied.service
+            systemctl enable powersentinal.service
         fi
 
-        read -p "Would you like to start upsied.service now? [Y/n]: " answer
+        read -p "Would you like to start powersentinal.service now? [Y/n]: " answer
         answer="${answer:-Y}"
         if [[ $answer =~ [Yy] ]]; then
-            systemctl start upsied.service
+            systemctl start powersentinal.service
         fi
     fi
 }
@@ -59,6 +73,6 @@ read -p "Choose installation method: [server/s] | [client/c] " choice
 
 case $choice in
     server|S|s) serverPackages ;;
-    client|C|c) clientSetup ;;
+    client|C|c) setupService "$pwd/client_src/watcher.sh" ;;
     *) echo "Invalid option" ;;
 esac

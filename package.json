@@ -2,9 +2,9 @@
   "name": "power_sentinal",
   "version": "0.1.0",
   "author": "chesspro13",
+  "type": "module",
   "scripts": {
-    "start-server": "tsx watch server_src/app.ts",
-    "start-client": "tsx watch client_src/app.ts",
+    "start": "tsx watch server_src/app.ts",
     "build": "npx tsc"
   },
   "devDependencies": {
