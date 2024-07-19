@@ -3,13 +3,18 @@ source ../.env
 
 while true 
 do
-    status=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .STATUS)
+    echo "http://$IP_ADDRESS:$PORT/status"
+    statusWquotes=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .STATUS)
+    status=${statusWquotes//\"/}
     battLevel=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .BCHARGE)
     battQuote=${battLevel// Percent/}
     percentage=${battQuote//\"/}
     level=${percentage%.*}
 
-    if [[ status == "ONBATT" ]]; then
+    echo "$status"
+
+    if [ $status == "ONBATT" ] 
+    then
         if (( level < 80 )); then
             if [[ $MODE == "TESTING" ]]; then 
                 echo "Simulating shutdown event!"
@@ -25,8 +30,13 @@ do
         fi
 
         sleep 30
-    else
+    elif [ $status == "ONLINE" ] 
+    then
         echo "Status: Normal"
+        echo "Charge: $level%" 
+        sleep 60
+    else 
+        echo "Status: Inactive"
         sleep 60
     fi
 done

@@ -39,13 +39,16 @@ setupService() {
             \nAfter=network.target\n
             \n
             \n[Service]
-            \nEnvironment=NODE_PORT=$PORT
+            \nEnvironment=PORT=$PORT
+            \nEnvironment=IP_ADDRESS=$IP_ADDRESS
+            \nEnvironment=MODE=$MODE
             \nType=simple
             \nExecStart=$1
             \nRestart=always
             \n
             \n[Install]
-            \nWantedBy=multiuser.target"
+            \nWantedBy=multiuser.target\n
+            \n"
         echo -e $service > /etc/systemd/system/powersentinal.service
 
         read -p "Would you like powersentinal.service to start on boot [Y/n]: " answer
