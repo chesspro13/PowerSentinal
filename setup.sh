@@ -19,6 +19,9 @@ serverPackages()
         apt-get -y install apcupsd nodejs ufw
         echo "APCUPSD, NodeJS, and UFW installed."
 
+        echo "Installing NPM packages"
+        npm i
+        echo "NPM packages installed"
         
         read -p "Would you like build the service? [Y/n]: " answer
         answer="${answer:-Y}"
