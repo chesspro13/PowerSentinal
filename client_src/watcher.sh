@@ -10,11 +10,16 @@ do
     level=${percentage%.*}
 
     if [[ status == "ONBATT" ]]; then
-        
-        echo "[$level]"
         if (( level < 80 )); then
-            echo "Shutting down!"
-            # shutdown now
+            if [[ $MODE == "TESTING" ]]; then 
+                echo "Simulating shutdown event!"
+            elif [[ $MODE == "PRODUCTION" ]]; then
+                # TODO: Add external shutdown scripts for fine tuned control
+                echo "Shutting down!"
+                shutdown now
+            else 
+                echo "OPERATION MODE NOT CONFIGURED CORRECTLY"
+            fi
         else
             echo "On battery! $level%"
         fi
