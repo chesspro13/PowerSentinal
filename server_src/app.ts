@@ -205,7 +205,7 @@ function getAll() {
 }
 
 function getLast() {
-    const query = "SELECT id FROM power_data ORDER BY id DESC LIMIT 1;";
+    const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
     const data = db.prepare(query).all();
 
     console.log(data);
@@ -226,5 +226,6 @@ setInterval(() => {
         newData.run(JSON.parse(prep));
         // db.close();
     });
-    getAll();
+    if ( process.env.MODE == "TESTING")
+        getLast()
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
