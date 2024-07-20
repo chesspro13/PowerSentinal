@@ -226,5 +226,5 @@ setInterval(() => {
         newData.run(JSON.parse(prep));
         // db.close();
     });
-    getLast();
+    getAll();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
