@@ -63,7 +63,7 @@ function get_data(fctn: CallableFunction) {
 }
 
 console.log("Starting database");
-const db = new Database("data/power_data.db");
+const db = new Database(process.env.WORKING_DIR + "data/power_data.db");
 db.pragma("journal_mode = WAL");
 db.exec(databaseTable);
 console.log("Database loaded.");

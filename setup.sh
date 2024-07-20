@@ -23,7 +23,7 @@ serverPackages()
         npm i
         echo "NPM packages installed"
         
-        mkdir data
+        mkdir "$PWD/data"
         echo "Created folder for database"
 
         read -p "Would you like build the service? [Y/n]: " answer
@@ -54,6 +54,7 @@ setupService() {
             \nEnvironment=PORT=$PORT
             \nEnvironment=IP_ADDRESS=$IP_ADDRESS
             \nEnvironment=MODE=$MODE
+            \nEnvironment=WORKING_DIR=$PWD
             \nType=simple
             \nExecStart=$1
             \nRestart=always
