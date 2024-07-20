@@ -202,7 +202,13 @@ function getAll() {
     const data = db.prepare(query).all();
 
     console.log(data);
-    // db.close();
+}
+
+function getLast() {
+    const query = "SELECT id FROM power_data ORDER BY id DESC LIMIT 1;";
+    const data = db.prepare(query).all();
+
+    console.log(data);
 }
 
 setInterval(() => {
@@ -220,5 +226,5 @@ setInterval(() => {
         newData.run(JSON.parse(prep));
         // db.close();
     });
-    getAll();
+    getLast();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
