@@ -36,7 +36,7 @@ serverPackages()
             dir=$PWD
             subD=${dir//"/home/"/}
             user=${subD%%\/*}
-            setupService "/home/$user/.nvm/versions/node/$NODE_VERSION/bin/node  $PWD/dist/app.js"
+            setupService "/home/$user/.nvm/versions/node/v$NODE_VERSION/bin/node  $PWD/dist/app.js"
         fi
         
         read -p "Would you like to allow port $PORT through ufw? [Y/n]: " answer
