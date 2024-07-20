@@ -219,7 +219,7 @@ setInterval(() => {
         let data = JSON.parse(a);
         Object.keys(data).forEach((key: string) => {
             prep = prep.replace(
-                key + '": "null"',
+                key + '": null',
                 key + '": "' + data[key] + '"'
             );
         });
