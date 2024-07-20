@@ -23,6 +23,9 @@ serverPackages()
         npm i
         echo "NPM packages installed"
         
+        mkdir data
+        echo "Created folder for database"
+
         read -p "Would you like build the service? [Y/n]: " answer
         answer="${answer:-Y}"
         if [[ $answer =~ [Yy] ]]; then    
