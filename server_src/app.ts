@@ -192,32 +192,32 @@ function get_data(fctn: CallableFunction) {
     );
 }
 
-console.log("Starting database");
-const db = new Database(process.env.WORKING_DIR + "/data/power_data.db");
-db.pragma("journal_mode = WAL");
-db.exec(databaseTable);
-console.log("Database loaded.");
+// console.log("Starting database");
+// const db = new Database(process.env.WORKING_DIR + "/data/power_data.db");
+// db.pragma("journal_mode = WAL");
+// db.exec(databaseTable);
+// console.log("Database loaded.");
 
-function getAll() {
-    const query = "SELECT * FROM power_data";
-    const data = db.prepare(query).all();
+// function getAll() {
+//     const query = "SELECT * FROM power_data";
+//     const data = db.prepare(query).all();
 
-    console.log(data);
-    db.close();
-}
+//     console.log(data);
+//     db.close();
+// }
 
-setInterval(() => {
-    const newData = db.prepare(prepareDataInsert);
-    get_data((a: string) => {
-        let prep = preparedJson;
-        let data = JSON.parse(a);
-        Object.keys(data).forEach((key: string) => {
-            prep = prep.replace(
-                key + '": "null"',
-                key + '": "' + data[key] + '"'
-            );
-        });
-        newData.run(JSON.parse(prep));
-        db.close();
-    });
-}, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
+// setInterval(() => {
+//     const newData = db.prepare(prepareDataInsert);
+//     get_data((a: string) => {
+//         let prep = preparedJson;
+//         let data = JSON.parse(a);
+//         Object.keys(data).forEach((key: string) => {
+//             prep = prep.replace(
+//                 key + '": "null"',
+//                 key + '": "' + data[key] + '"'
+//             );
+//         });
+//         newData.run(JSON.parse(prep));
+//         db.close();
+//     });
+// }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
