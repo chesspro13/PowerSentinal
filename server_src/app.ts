@@ -66,6 +66,7 @@ console.log("Starting database");
 const db = new Database("data/power_data.db");
 db.pragma("journal_mode = WAL");
 db.exec(databaseTable);
+console.log("Database loaded.");
 
 function getAll() {
     const query = "SELECT * FROM power_data";
@@ -78,7 +79,6 @@ function getAll() {
 setInterval(() => {
     const newData = db.prepare(prepareDataInsert);
     get_data((a: string) => {
-        // let prep = "INSERT INTO power_data VALUES(";
         let prep = preparedJson;
         let data = JSON.parse(a);
         Object.keys(data).forEach((key: string) => {
