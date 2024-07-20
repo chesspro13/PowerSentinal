@@ -11,7 +11,7 @@ import { config } from "dotenv";
 
 export const databaseTable = `
     CREATE TABLE IF NOT EXISTS power_data (
-    id INT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     ACTIVE BOOLEAN,
     APC STRING,
     DATE STRING,
@@ -28,18 +28,18 @@ export const databaseTable = `
     LOADPCT FLOAT,
     BCHARGE FLOAT,
     TIMELEFT FLOAT,
-    MBATTCHG INT,
-    MINTIMEL INT,
-    MAXTIME INT,
+    MBATTCHG INTEGER,
+    MINTIMEL INTEGER,
+    MAXTIME INTEGER,
     SENSE STRING,
     LOTRANS FLOAT,
     HITRANS FLOAT,
     ALARMDEL STRING,
     BATTV FLOAT,
     LASTXFER STRING,
-    NUMXFERS INT,
-    TONBATT INT,
-    CUMONBATT INT,
+    NUMXFERS INTEGER,
+    TONBATT INTEGER,
+    CUMONBATT INTEGER,
     XOFFBATT STRING,
     SELFTEST STRING,
     STATFLAG STRING,
@@ -47,52 +47,51 @@ export const databaseTable = `
     BATTDATE STRING,
     NOMINV FLOAT,
     NOMBATTV FLOAT,
-    NOMPOWER INT,
+    NOMPOWER INTEGER,
     FIRMWARE STRING,
     END_APC STRING
     )
 `;
 
 export const preparedJson = `{
-    "id": "null",
-    "ACTIVE": "null",
-    "APC": "null",
-    "DATE": "null",
-    "HOSTNAME": "null",
-    "VERSION": "null",
-    "UPSNAME": "null",
-    "CABLE": "null",
-    "DRIVER": "null",
-    "UPSMODE": "null",
-    "STARTTIME": "null",
-    "MODEL": "null",
-    "STATUS": "null",
-    "LINEV": "null",
-    "LOADPCT": "null",
-    "BCHARGE": "null",
-    "TIMELEFT": "null",
-    "MBATTCHG": "null",
-    "MINTIMEL": "null",
-    "MAXTIME": "null",
-    "SENSE": "null",
-    "LOTRANS": "null",
-    "HITRANS": "null",
-    "ALARMDEL": "null",
-    "BATTV": "null",
-    "LASTXFER": "null",
-    "NUMXFERS": "null",
-    "TONBATT": "null",
-    "CUMONBATT": "null",
-    "XOFFBATT": "null",
-    "SELFTEST": "null",
-    "STATFLAG": "null",
-    "SERIALNO": "null",
-    "BATTDATE": "null",
-    "NOMINV": "null",
-    "NOMBATTV": "null",
-    "NOMPOWER": "null",
-    "FIRMWARE": "null",
-    "END_APC": "null"
+    "ACTIVE": null,
+    "APC": null,
+    "DATE": null,
+    "HOSTNAME": null,
+    "VERSION": null,
+    "UPSNAME": null,
+    "CABLE": null,
+    "DRIVER": null,
+    "UPSMODE": null,
+    "STARTTIME": null,
+    "MODEL": null,
+    "STATUS": null,
+    "LINEV": null,
+    "LOADPCT": null,
+    "BCHARGE": null,
+    "TIMELEFT": null,
+    "MBATTCHG": null,
+    "MINTIMEL": null,
+    "MAXTIME": null,
+    "SENSE": null,
+    "LOTRANS": null,
+    "HITRANS": null,
+    "ALARMDEL": null,
+    "BATTV": null,
+    "LASTXFER": null,
+    "NUMXFERS": null,
+    "TONBATT": null,
+    "CUMONBATT": null,
+    "XOFFBATT": null,
+    "SELFTEST": null,
+    "STATFLAG": null,
+    "SERIALNO": null,
+    "BATTDATE": null,
+    "NOMINV": null,
+    "NOMBATTV": null,
+    "NOMPOWER": null,
+    "FIRMWARE": null,
+    "END_APC": null
 }`;
 
 export const prepareDataInsert = `
@@ -192,32 +191,34 @@ function get_data(fctn: CallableFunction) {
     );
 }
 
-// console.log("Starting database");
-// const db = new Database(process.env.WORKING_DIR + "/data/power_data.db");
-// db.pragma("journal_mode = WAL");
-// db.exec(databaseTable);
-// console.log("Database loaded.");
+console.log("Starting database");
+const db = new Database("data/power_data.db");
+db.pragma("journal_mode = WAL");
+db.exec(databaseTable);
+console.log("Database loaded.");
 
-// function getAll() {
-//     const query = "SELECT * FROM power_data";
-//     const data = db.prepare(query).all();
+function getAll() {
+    const query = "SELECT * FROM power_data";
+    const data = db.prepare(query).all();
 
-//     console.log(data);
-//     db.close();
-// }
+    console.log(data);
+    // db.close();
+}
 
-// setInterval(() => {
-//     const newData = db.prepare(prepareDataInsert);
-//     get_data((a: string) => {
-//         let prep = preparedJson;
-//         let data = JSON.parse(a);
-//         Object.keys(data).forEach((key: string) => {
-//             prep = prep.replace(
-//                 key + '": "null"',
-//                 key + '": "' + data[key] + '"'
-//             );
-//         });
-//         newData.run(JSON.parse(prep));
-//         db.close();
-//     });
-// }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
+setInterval(() => {
+    console.log("Fired");
+    const newData = db.prepare(prepareDataInsert);
+    get_data((a: string) => {
+        let prep = preparedJson;
+        let data = JSON.parse(a);
+        Object.keys(data).forEach((key: string) => {
+            prep = prep.replace(
+                key + '": "null"',
+                key + '": "' + data[key] + '"'
+            );
+        });
+        newData.run(JSON.parse(prep));
+        // db.close();
+    });
+    getAll();
+}, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);

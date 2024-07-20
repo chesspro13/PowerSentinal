@@ -55,6 +55,7 @@ setupService() {
             \nEnvironment=IP_ADDRESS=$IP_ADDRESS
             \nEnvironment=MODE=$MODE
             \nEnvironment=WORKING_DIR=$PWD
+            \nWorkingDirectory=$PWD
             \nType=simple
             \nExecStart=$1
             \nRestart=always
