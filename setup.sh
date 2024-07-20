@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+echo "WARNING! Script 'nodesetup.sh' MUST be ran before this script!"
+
 if [ "$EUID" -ne 0 ]; then 
     echo "Please run as root"
     exit
@@ -20,7 +22,7 @@ serverPackages()
         echo "APCUPSD, NodeJS, and UFW installed."
 
         echo "Installing NPM packages"
-        npm i
+        npm i 
         echo "NPM packages installed"
         
         mkdir "$PWD/data"
@@ -31,7 +33,10 @@ serverPackages()
         if [[ $answer =~ [Yy] ]]; then    
             npm run build
 
-            setupService "/usr/bin/nodejs $PWD/dist/app.js"
+            dir=$PWD
+            subD=${dir//"/home/"/}
+            user=${subD%%\/*}
+            setupService "/home/$user/.nvm/versions/node/$NODE_VERSION/bin/node  $PWD/dist/app.js"
         fi
         
         read -p "Would you like to allow port $PORT through ufw? [Y/n]: " answer
@@ -74,18 +79,26 @@ setupService() {
         read -p "Would you like to start powersentinal.service now? [Y/n]: " answer
         answer="${answer:-Y}"
         if [[ $answer =~ [Yy] ]]; then
+            systemctl daemon-reload
             systemctl start powersentinal.service
-            systemctl restart powersentinal.service
         fi
 
         echo  $(systemctl status powersentinal.service)
     fi
 }
 
-read -p "Choose installation method: [server/s] | [client/c] " choice
+startFromScratch() {
+    read -p "Choose installation method: [server/s] | [client/c] " choice
 
-case $choice in
+    case $choice in
+        server|S|s) serverPackages ;;
+        client|C|c) setupService "$PWD/client_src/watcher.sh" ;;
+        *) echo "Invalid option" ;;
+    esac
+}
+
+case $1 in 
     server|S|s) serverPackages ;;
     client|C|c) setupService "$PWD/client_src/watcher.sh" ;;
-    *) echo "Invalid option" ;;
+    *) startFromScratch
 esac
