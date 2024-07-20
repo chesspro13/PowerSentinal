@@ -221,3 +221,5 @@ function get_data(fctn: CallableFunction) {
 //         db.close();
 //     });
 // }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
+
+module.exports = [get_data];
