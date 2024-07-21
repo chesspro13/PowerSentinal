@@ -7,6 +7,7 @@ import {
     prepareDataInsert,
     preparedJson,
 } from "./database_table.js";
+import * as databaseOperations from "./database.js";
 import { router as dataRouter } from "./routes/data.js";
 import { config } from "dotenv";
 
@@ -64,29 +65,7 @@ function get_data(fctn: CallableFunction) {
     );
 }
 
-console.log("Starting database");
-const db = new Database("data/power_data.db");
-db.pragma("journal_mode = WAL");
-db.exec(databaseTable);
-console.log("Database loaded.");
-
-function getAll() {
-    const query = "SELECT * FROM power_data";
-    const data = db.prepare(query).all();
-
-    console.log(data);
-}
-
-function getLast() {
-    const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
-    const data = db.prepare(query).all();
-
-    console.log(data);
-}
-
 setInterval(() => {
-    console.log("Fired");
-    const newData = db.prepare(prepareDataInsert);
     get_data((a: string) => {
         let prep = preparedJson;
         let data = JSON.parse(a);
@@ -96,8 +75,7 @@ setInterval(() => {
                 key + '": "' + data[key] + '"'
             );
         });
-        newData.run(JSON.parse(prep));
-        // db.close();
+        databaseOperations.writeData(JSON.parse(prep));
     });
-    if (process.env.MODE == "TESTING") getLast();
+    if (process.env.MODE == "TESTING") databaseOperations.getLast();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
