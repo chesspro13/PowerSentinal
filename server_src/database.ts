@@ -22,7 +22,11 @@ export function getLast() {
     const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
     const data = db.prepare(query).all();
 
-    console.log(data);
+    return data;
+}
+
+export function printLast() {
+    console.log(getLast());
 }
 
 export function writeData(data: JSON) {

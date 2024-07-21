@@ -9,11 +9,13 @@ import {
 } from "./database_table.js";
 import * as databaseOperations from "./database.js";
 import { router as dataRouter } from "./routes/data.js";
+import { router as statusRouter } from "./routes/status.js";
 import { config } from "dotenv";
 
 const app = express();
 app.use(express.json());
 app.use("/data", dataRouter);
+app.use("/status", statusRouter);
 
 config();
 const PORT = process.env.PORT || 27415;
@@ -23,12 +25,6 @@ const interval =
 
 app.listen(PORT, () => {
     console.log("Server listening on port: ", PORT);
-});
-
-app.get("/status", (request: Request, response: Response) => {
-    get_data((output: string) => {
-        response.send(output);
-    });
 });
 
 function get_data(fctn: CallableFunction) {
@@ -77,5 +73,5 @@ setInterval(() => {
         });
         databaseOperations.writeData(JSON.parse(prep));
     });
-    if (process.env.MODE == "TESTING") databaseOperations.getLast();
+    if (process.env.MODE == "TESTING") databaseOperations.printLast();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);
