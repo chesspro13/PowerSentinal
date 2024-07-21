@@ -3,12 +3,12 @@ source ../.env
 
 while true 
 do
-    echo "Pinging server at http://$IP_ADDRESS:$PORT/status"
-    echo $(curl "http://$IP_ADDRESS:$PORT/status")
+    echo "Pinging server at http://$IP_ADDRESS:$API_PORT/status"
+    echo $(curl "http://$IP_ADDRESS:$API_PORT/status")
     
-    statusWquotes=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .STATUS)
+    statusWquotes=$(curl "http://$IP_ADDRESS:$API_PORT/status" | jq .STATUS)
     status=${statusWquotes//\"/}
-    battLevel=$(curl "http://$IP_ADDRESS:$PORT/status" | jq .BCHARGE)
+    battLevel=$(curl "http://$IP_ADDRESS:$API_PORT/status" | jq .BCHARGE)
     battQuote=${battLevel// Percent/}
     percentage=${battQuote//\"/}
     level=${percentage%.*}
