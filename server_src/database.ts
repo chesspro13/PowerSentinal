@@ -6,7 +6,7 @@ import {
 } from "./database_table.js";
 
 console.log("Starting database");
-const db = new Database("./data/power_data.db");
+const db = new Database("./dist/data/power_data.db");
 db.pragma("journal_mode = WAL");
 db.exec(databaseTable);
 console.log("Database loaded.");
@@ -21,13 +21,27 @@ export function getAll() {
 export function getLast() {
     const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
     const data = db.prepare(query).all();
-    console.log(typeof data);
-    console.log(JSON.parse(JSON.stringify(data)));
-    JSON.parse(JSON.stringify(data)).forEach((element: JSON | unknown) => {
-        console.log(typeof element);
-        // if (element !== un) console.log("}}" + element[0]);
-    });
     return data[0];
+}
+
+export function getLoad(): number[] | unknown {
+    const query = "SELECT LOADPCT FROM power_data ORDER BY id DESC;";
+    const data = db.prepare(query).all();
+    console.log(typeof data[0]);
+
+    if (typeof data[0] == "object") console.log();
+    let cleanData: number[] = [];
+    data.forEach((item: string | unknown) => {
+        const s = JSON.stringify(data[0]);
+        const l = JSON.parse(s)["LOADPCT"];
+        if (l != "null") {
+            const j = l.split(" ")[0];
+
+            cleanData.push(parseFloat(j));
+        }
+    });
+    console.log(cleanData);
+    return cleanData;
 }
 
 export function printLast() {
