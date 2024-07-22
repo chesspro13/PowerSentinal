@@ -17,6 +17,9 @@ const interval =
 // WEB INTERFACE
 const web = express();
 web.use(express.json());
+web.set("view engine", "ejs");
+web.set("views", "./server_src/public");
+web.use(express.static("./server_src/public"));
 web.use("/", viewRouter);
 web.listen(WEB_PORT, () => {
     console.log("WEB server listening on port: ", WEB_PORT);
@@ -43,5 +46,5 @@ setInterval(() => {
         });
         databaseOperations.writeData(JSON.parse(prep));
     });
-    if (process.env.MODE == "TESTING") databaseOperations.printLast();
+    // if (process.env.MODE == "TESTING") databaseOperations.printLast();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);

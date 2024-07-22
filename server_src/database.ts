@@ -21,8 +21,13 @@ export function getAll() {
 export function getLast() {
     const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
     const data = db.prepare(query).all();
-
-    return data;
+    console.log(typeof data);
+    console.log(JSON.parse(JSON.stringify(data)));
+    JSON.parse(JSON.stringify(data)).forEach((element: JSON | unknown) => {
+        console.log(typeof element);
+        // if (element !== un) console.log("}}" + element[0]);
+    });
+    return data[0];
 }
 
 export function printLast() {

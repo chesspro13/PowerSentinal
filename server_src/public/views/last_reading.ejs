@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title href="/main">Power Sentinal</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <h1><b>Power Sentinal</b></h1>
+            <ul>
+                <!-- <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        <aside>
+            <ul>
+                <li><a href="/last_reading">Last Reading</a></li>
+                <li><a href="#">Power Usage</a></li>
+            </ul>
+        </aside>
+        <main>
+            <h1>Main Content</h1>
+            <div id="graph">
+                <% Object.keys(jsonData).forEach((key) =>{ %>
+                    <div class='json-item'>
+                        <h2><%= key %></h2>
+                        <p><%= jsonData[key] %></p>
+                    </div>
+                <% }) %>
+                <!-- Graph will be embedded here -->
+            </div>
+        </main>
+    </div>
+</body>
+<!-- <script type='text/javascript'>
+    // const jsonData = 
+    // [
+    //     { id: 1, name: "Item 1", description: "Description for item 1" },
+    //     { id: 2, name: "Item 2", description: "Description for item 2" },
+    //     { id: 3, name: "Item 3", description: "Description for item 3" },
+    //     { id: 4, name: "Item 1", description: "Description for item 1" },
+    //     { id: 5, name: "Item 2", description: "Description for item 2" },
+    //     { id: 6, name: "Item 3", description: "Description for item 3" },
+    //     // ... more items ...
+    //     { id: 40, name: "Item 40", description: "Description for item 40" }
+    // ];
+
+    const jsonListContainer = document.getElementById('graph');
+    jsonData.forEach(item => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'json-item';
+        itemDiv.innerHTML = `
+            <h2>${item.name}</h2>
+            <p>${item.description}</p>
+        `;
+        jsonListContainer.appendChild(itemDiv);
+    });
+</script> -->
+
+</html>
