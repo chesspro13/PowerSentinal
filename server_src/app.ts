@@ -1,8 +1,7 @@
 import express from "express";
 import { preparedJson } from "./database_table.js";
 import * as databaseOperations from "./database.js";
-import { router as apiRouter } from "./routes/api.js";
-import { router as viewRouter } from "./routes/views.js";
+import { router as apiRouter } from "./api.js";
 import { config } from "dotenv";
 import { get_data } from "./data_collector.js";
 
