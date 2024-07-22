@@ -11,8 +11,15 @@ export function get_data(fctn: CallableFunction) {
             if (error !== null) {
                 console.log(`exec error: ${error}`);
             }
+            const dateObj = new Date();
 
-            var jsonOutput = '"ACTIVE":"TRUE"';
+            var jsonOutput = '"YEAR":"' + dateObj.getUTCFullYear() +
+                '","MONTH":"' + dateObj.getUTCMonth()  +
+                '","DAY":"' + dateObj.getUTCDate() +
+                '","HOUR":"' + dateObj.getUTCHours() +
+                '","MINUTE":"' + dateObj.getUTCMinutes() +
+                '","SECOND":"' + dateObj.getUTCSeconds() + '"'
+
             let q = { Status: "Running" };
             stdout
                 .toString()
@@ -23,9 +30,12 @@ export function get_data(fctn: CallableFunction) {
                         let keyVal = formattedItem.split(":");
                         jsonOutput +=
                             ',"' +
-                            keyVal[0].trim().replace(" ", "_") +
+                            keyVal[0].trim()
+                            .replace(" ", "_") +
                             '":"' +
-                            keyVal[1].trim() +
+                            keyVal[1]
+                            .replace(" Percent","")
+                            .trim() +
                             '"';
                     }
                 });
