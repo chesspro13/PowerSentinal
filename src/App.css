@@ -1,0 +1,102 @@
+:root {
+    --background-color: #121212;
+    --text-color: #ffffff;
+    --header-background: #1f1f1f;
+    --header-text: #ffffff;
+    --aside-background: #1f1f1f;
+    --aside-text: #ffffff;
+    --graph-border: #444;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header {
+    background-color: var(--header-background);
+    color: var(--header-text);
+    padding: 1rem;
+    text-align: center;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+nav h1 {
+    font-size: 40px;
+    padding: 0%;
+    margin: 0px;
+}
+
+nav ul {
+    list-style-type: none;
+    display: inline;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 1rem;
+}
+
+nav ul li a {
+    color: var(--header-text);
+    text-decoration: none;
+}
+
+.container {
+    display: flex;
+}
+
+aside {
+    width: 20%;
+    background-color: var(--aside-background);
+    padding: 1rem;
+}
+
+aside ul {
+    list-style-type: none;
+}
+
+aside ul li {
+    margin-bottom: 0.5rem;
+}
+
+aside ul li a {
+    text-decoration: none;
+    color: var(--aside-text);
+}
+
+main {
+    width: 80%;
+    padding: 1rem;
+}
+
+#graph {
+    width: 100%;
+    height: fit-content;
+    border: 1px solid var(--graph-border);
+    margin-top: 1rem;
+
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.json-item {
+    background-color: var(--aside-background);
+    border: 1px solid var(--graph-border);
+    padding: 1rem;
+    border-radius: 5px;
+    vertical-align: middle;
+    align-items: center;
+    width: fit-content;
+    text-align: center;
+    box-sizing: border-box;
+    color: var(--aside-text);
+}
