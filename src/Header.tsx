@@ -9,7 +9,7 @@ function Header() {
                         <b>Power Sentinal</b>
                     </h1>
                     <ul>
-                        <li>
+                        {/* <li>
                             <a href="#">Home</a>
                         </li>
                         <li>
@@ -20,7 +20,7 @@ function Header() {
                         </li>
                         <li>
                             <a href="#">Contact</a>
-                        </li>
+                        </li> */}
                     </ul>
                 </nav>
             </header>

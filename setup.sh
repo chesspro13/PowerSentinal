@@ -39,10 +39,11 @@ serverPackages()
             setupService "/home/$user/.nvm/versions/node/v$NODE_VERSION/bin/node  $PWD/dist/app.js"
         fi
         
-        read -p "Would you like to allow port $PORT through ufw? [Y/n]: " answer
+        read -p "Would you like to allow port's $API_PORT and $WEB_PORT through ufw? [Y/n]: " answer
         answer="${answer:-Y}"
         if [[ $answer =~ [Yy] ]]; then
-            ufw allow "$PORT/tcp"
+            ufw allow "$API_PORT/tcp"
+            ufw allow "$WEB_PORT/tcp"
         fi
     fi
 }
@@ -56,10 +57,11 @@ setupService() {
             \nAfter=network.target\n
             \n
             \n[Service]
-            \nEnvironment=PORT=$PORT
+            \nEnvironment=WEB_PORT=$WEB_PORT
+            \nEnvironment=API_PORT=$API_PORT
             \nEnvironment=IP_ADDRESS=$IP_ADDRESS
             \nEnvironment=MODE=$MODE
-            \nEnvironment=WORKING_DIR=$PWD
+            \nEnvironment=WORKING_DIR=$PWD/dist
             \nWorkingDirectory=$PWD
             \nType=simple
             \nExecStart=$1

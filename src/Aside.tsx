@@ -5,12 +5,7 @@ function Aside() {
         <aside>
             <ul>
                 <li>
-                    <a>Last Reading</a>
-                    {/* <a href="/last_reading">Last Reading</a> */}
-                </li>
-                <li>
-                    <a>Power Usage</a>
-                    {/* <a href="#">Power Usage</a> */}
+                    <a>Live Data</a>
                 </li>
             </ul>
         </aside>
