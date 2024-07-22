@@ -8,7 +8,9 @@
     "build-react": "BUILD_PATH='./server_src/build' react-scripts build",
     "test-react": "react-scripts test",
     "eject": "react-scripts eject",
-    "start": "tsx watch server_src/app.ts",
+    "dfstart": "tsx watch server_src/app.ts",
+    "start": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && node ./dist/app.js",
+    "refresh-react": "BUILD_PATH='./dist/build' react-scripts build && node ./dist/app.js",
     "build": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && mkdir ./dist/data",
     "test-build": "npm run build && node dist/app.js"
   },
