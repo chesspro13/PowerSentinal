@@ -18,28 +18,65 @@ export function getAll() {
     console.log(data);
 }
 
+export function getOldestRecord(){
+    const query = "SELECT MONTH, DAY, YEAR FROM power_data ORDER BY id ASC LIMIT 1;";
+    const data = db.prepare(query).all()[0];
+    console.log("Oldest record")
+    console.log( data )
+    const s = JSON.stringify(data);
+    const dataObject = JSON.parse(s)
+    let date = dataObject.YEAR + "-" 
+    if (dataObject.MONTH < 10)
+        date += "0" + dataObject.MONTH
+    else
+        date += dataObject.MONTH
+    date += "-"
+    if (dataObject.DAY < 10)
+        date += "0" + dataObject.DAY
+    else
+        date += dataObject.DAY
+    return '{ "DATE": "' +date + '"}'
+}
+
 export function getLast() {
     const query = "SELECT * FROM power_data ORDER BY id DESC LIMIT 1;";
     const data = db.prepare(query).all();
     return data[0];
 }
 
-export function getLoad(): number[] | unknown {
-    const query = "SELECT LOADPCT FROM power_data ORDER BY id DESC;";
+export function getLoadOverTime(timeval: string, timeline: string): number[] | unknown {
+    console.log("Getting load data================================================================");
+    const query = "SELECT LOADPCT, YEAR, MONTH, DAY, HOUR, MINUTE FROM power_data ORDER BY id ASC;";
     const data = db.prepare(query).all();
-    console.log(typeof data[0]);
+    let cleanData: {}[] = [];
+    data.forEach( (item :JSON | unknown) => {
+            const s = JSON.stringify(item);
+            const load = JSON.parse(s)["LOADPCT"];
+            const year = JSON.parse(s)["YEAR"];
+            const month = JSON.parse(s)["MONTH"];
+            const day = JSON.parse(s)["DAY"];
+            const hour = JSON.parse(s)["HOUR"];
+            const minute = JSON.parse(s)["MINUTE"];
+            const time = month + "-" + day + "-" + year + ":" + hour + minute
+            cleanData.push( {time:time, load:load});
+    })
+    console.log(cleanData);
+    return cleanData;
+}
 
-    if (typeof data[0] == "object") console.log();
-    let cleanData: number[] = [];
-    data.forEach((item: string | unknown) => {
-        const s = JSON.stringify(data[0]);
-        const l = JSON.parse(s)["LOADPCT"];
-        if (l != "null") {
-            const j = l.split(" ")[0];
+export function getLoad(): number[] | unknown {
+    console.log("Getting load data");
+    const query = "SELECT LOADPCT, MINUTE FROM power_data ORDER BY id ASC;";
+    const data = db.prepare(query).all();
+    console.log(data);
 
-            cleanData.push(parseFloat(j));
-        }
-    });
+    let cleanData: {}[] = [];
+    data.forEach( (item :JSON | unknown) => {
+            const s = JSON.stringify(item);
+            const load = JSON.parse(s)["LOADPCT"];
+            const minute = JSON.parse(s)["MINUTE"];
+            cleanData.push( {minute:minute, load:load});
+    })
     console.log(cleanData);
     return cleanData;
 }
