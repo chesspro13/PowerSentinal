@@ -17,10 +17,8 @@ const interval =
 // WEB INTERFACE
 const web = express();
 web.use(express.json());
-web.set("view engine", "ejs");
-web.set("views", "./server_src/public");
-web.use(express.static("./server_src/public"));
-web.use("/", viewRouter);
+web.use("/", express.static("./dist/build"));
+web.use("/api", apiRouter);
 web.listen(WEB_PORT, () => {
     console.log("WEB server listening on port: ", WEB_PORT);
 });
@@ -28,7 +26,7 @@ web.listen(WEB_PORT, () => {
 // API
 const api = express();
 api.use(express.json());
-api.use("/", apiRouter);
+api.use("/api", apiRouter);
 api.listen(API_PORT, () => {
     console.log("API server listening on port: ", API_PORT);
 });
