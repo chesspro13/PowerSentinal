@@ -25,7 +25,7 @@ export function get_data(fctn: CallableFunction) {
                             ',"' +
                             keyVal[0].trim().replace(" ", "_") +
                             '":"' +
-                            keyVal[1].trim() +
+                            keyVal[1].replace(" Percent", "").trim() +
                             '"';
                     }
                 });
