@@ -19,17 +19,16 @@ export function getAll() {
 }
 
 export function getOldestRecord() {
-    const query =
-        "SELECT MONTH, DAY, YEAR FROM power_data ORDER BY id ASC LIMIT 1;";
+    const query = "SELECT DATETIME FROM power_data ORDER BY id ASC LIMIT 1;";
     const data = db.prepare(query).all()[0];
     const s = JSON.stringify(data);
-    const dataObject = JSON.parse(s);
-    let date = dataObject.YEAR + "-";
-    if (dataObject.MONTH < 10) date += "0" + dataObject.MONTH;
-    else date += dataObject.MONTH;
+    const datetime = new Date(s);
+    let date = datetime.getUTCFullYear() + "-";
+    if (datetime.getUTCMonth() < 10) date += "0" + datetime.getUTCMonth();
+    else date += datetime.getUTCMonth();
     date += "-";
-    if (dataObject.DAY < 10) date += "0" + dataObject.DAY;
-    else date += dataObject.DAY;
+    if (datetime.getUTCDate() < 10) date += "0" + datetime.getUTCDate();
+    else date += datetime.getUTCDate();
     return '{ "DATE": "' + date + '"}';
 }
 

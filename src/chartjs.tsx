@@ -8,12 +8,19 @@ function Charts() {
     const [endDate, setEndDate] = useState("");
 
     function updateData() {
-        fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+        fetch("/api/load/overtime").then((result) => {
             result.json().then((data) => {
                 setData(data);
             });
         });
     }
+    // function updateData() {
+    //     fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+    //         result.json().then((data) => {
+    //             setData(data);
+    //         });
+    //     });
+    // }
 
     useEffect(() => {
         if (startDate != "" && endDate != "") updateData();
