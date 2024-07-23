@@ -12,7 +12,7 @@ export function get_data(fctn: CallableFunction) {
                 console.log(`exec error: ${error}`);
             }
 
-            var jsonOutput = '"ACTIVE":"TRUE"';
+            var jsonOutput = '"DATETIME":"' + new Date() + '"';
             let q = { Status: "Running" };
             stdout
                 .toString()

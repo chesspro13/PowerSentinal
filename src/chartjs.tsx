@@ -1,32 +1,52 @@
-import React from "react";
+import { useState, useEffect, useCallback } from "react";
 import { LineChart, XAxis, CartesianGrid, Line, YAxis } from "recharts";
-import DatePicker from './datepicker'
-
+import DatePicker from "./datepicker";
 
 function Charts() {
-    const [data, setData] = React.useState([]);
+    const [data, setData] = useState([]);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     function updateData() {
-        fetch("/api/load").then((result) => {
+        fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
             result.json().then((data) => {
-                console.log(data[0]);
                 setData(data);
             });
         });
     }
 
-    React.useEffect(() => {
-        updateData();
-    }, []);
-       
+    useEffect(() => {
+        if (startDate != "" && endDate != "") updateData();
+    }, [startDate, endDate]);
+
     return (
         <div>
-            <DatePicker />
-            <DatePicker />
-            <LineChart width={600} height={400} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+            <div style={{ display: "flex" }}>
+                <DatePicker
+                    range="early"
+                    setDate={setStartDate}
+                    description="Start range "
+                />
+                <DatePicker
+                    range="late"
+                    setDate={setEndDate}
+                    description="End range "
+                />
+            </div>
+            <LineChart
+                width={600}
+                height={400}
+                data={data}
+                margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+            >
                 <XAxis dataKey="time" />
                 <YAxis dataKey="load" />
-                <Line type="monotone" dataKey="load" isAnimationActive={false} stroke="#fff" />
+                <Line
+                    type="monotone"
+                    dataKey="load"
+                    isAnimationActive={false}
+                    stroke="#fff"
+                />
             </LineChart>
         </div>
     );
