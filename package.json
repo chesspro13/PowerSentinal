@@ -11,7 +11,7 @@
     "start-express": "tsx watch server_src/app.ts",
     "start": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && node ./dist/app.js",
     "refresh-react": "BUILD_PATH='./dist/build' react-scripts build && node ./dist/app.js",
-    "build": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && mkdir ./dist/data",
+    "build": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && mkdir -p ./dist/data",
     "test-build": "npm run build && node dist/app.js"
   },
   "dependencies": {

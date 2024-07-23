@@ -7,20 +7,26 @@ function Charts() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    function updateData() {
-        fetch("/api/load/overtime").then((result) => {
-            result.json().then((data) => {
-                setData(data);
-            });
-        });
-    }
     // function updateData() {
-    //     fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+    //     fetch("/api/load/overtime").then((result) => {
     //         result.json().then((data) => {
     //             setData(data);
     //         });
     //     });
     // }
+    function updateData() {
+        console.log(startDate, endDate);
+        fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+            result.json().then((data) => {
+                setData(data);
+            });
+        });
+    }
+
+    useEffect(() => {
+        console.log("I got data: " + typeof data);
+        console.log("I got data: " + JSON.stringify(data));
+    }, [data]);
 
     useEffect(() => {
         if (startDate != "" && endDate != "") updateData();

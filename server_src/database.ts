@@ -4,6 +4,7 @@ import {
     prepareDataInsert,
     preparedJson,
 } from "./database_table.js";
+import { utcToLocal, localToUTC } from "./date.js";
 
 console.log("Starting database");
 const db = new Database("./dist/data/power_data.db");
@@ -22,14 +23,8 @@ export function getOldestRecord() {
     const query = "SELECT DATETIME FROM power_data ORDER BY id ASC LIMIT 1;";
     const data = db.prepare(query).all()[0];
     const s = JSON.stringify(data);
-    const datetime = new Date(s);
-    let date = datetime.getUTCFullYear() + "-";
-    if (datetime.getUTCMonth() < 10) date += "0" + datetime.getUTCMonth();
-    else date += datetime.getUTCMonth();
-    date += "-";
-    if (datetime.getUTCDate() < 10) date += "0" + datetime.getUTCDate();
-    else date += datetime.getUTCDate();
-    return '{ "DATE": "' + date + '"}';
+    console.log(JSON.parse(s)["DATETIME"]);
+    return '{ "DATE": "' + JSON.parse(s)["DATETIME"] + '"}';
 }
 
 export function getLast() {
@@ -43,15 +38,19 @@ export function getLoadInRange(
     endDate: string
 ): number[] | unknown {
     const query =
-        "SELECT LOADPCT, DATETIME FROM power_data WHERE date( DATETIME ) BETWEEN " +
-        startDate +
-        " AND " +
-        endDate +
-        " ORDER BY id ASC;";
+        "SELECT LOADPCT, DATETIME FROM power_data WHERE DATE( DATETIME ) BETWEEN '" +
+        localToUTC(startDate) +
+        "' AND '" +
+        localToUTC(endDate) +
+        "' ORDER BY id ASC;";
 
     console.log(
         "Getting load data from query ================================================================"
     );
+    console.log(startDate);
+    console.log(endDate);
+    console.log(localToUTC(startDate));
+    console.log(localToUTC(endDate));
     console.log(query);
     const data = db.prepare(query).all();
     let cleanData: {}[] = [];
@@ -59,19 +58,8 @@ export function getLoadInRange(
     data.forEach((item: JSON | unknown) => {
         const s = JSON.stringify(item);
         const load = JSON.parse(s)["LOADPCT"];
-
         const date = new Date(JSON.parse(s)["DATETIME"]);
-
-        const time =
-            date.getMonth() +
-            "-" +
-            date.getDate() +
-            "-" +
-            date.getFullYear() +
-            ":" +
-            date.getHours() +
-            date.getMinutes();
-        cleanData.push({ time: time, load: load });
+        cleanData.push({ time: utcToLocal(date.toISOString()), load: load });
     });
     console.log(cleanData);
     return cleanData;
@@ -92,6 +80,7 @@ export function getLoadOverTime(
 
         const date = new Date(JSON.parse(s)["DATETIME"]);
 
+        console.log("Da Date" + date);
         const time =
             date.getMonth() +
             "-" +

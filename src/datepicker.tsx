@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { utcToLocal } from "./date";
 import "./datepicker.css";
 
 interface props {
@@ -29,6 +30,7 @@ function DatePicker(props: props) {
         maxDate += "-";
         if (today.getUTCDate() < 10) maxDate += "0" + today.getUTCDate();
         else maxDate += today.getUTCDate();
+        maxDate += "T23:59:59.999Z";
         setLatestDate(maxDate);
     }
 
@@ -40,13 +42,13 @@ function DatePicker(props: props) {
     useEffect(() => {
         if (props.range == "early") {
             if (earliestDate != "" && date != earliestDate) {
-                setDate(earliestDate);
-                props.setDate(earliestDate);
+                setDate(utcToLocal(earliestDate).split("T")[0]);
+                props.setDate(utcToLocal(earliestDate).split("T")[0]);
             }
         } else if (props.range == "late") {
             if (latestDate != "" && date != latestDate) {
-                setDate(latestDate);
-                props.setDate(latestDate);
+                setDate(utcToLocal(latestDate).split("T")[0]);
+                props.setDate(utcToLocal(latestDate).split("T")[0]);
             }
         }
     }, [earliestDate, latestDate]);
