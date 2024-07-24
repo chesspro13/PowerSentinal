@@ -3,7 +3,6 @@ import { LineChart, XAxis, CartesianGrid, Line, YAxis } from "recharts";
 import useWindowDimensions from "./window_dimensions";
 import DatePicker from "./datepicker";
 import React from "react";
-import { contourDensity } from "d3";
 
 function Charts() {
     const [data, setData] = useState([]);
