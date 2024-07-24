@@ -8,17 +8,37 @@ function Charts() {
     const [data, setData] = useState([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [ minValue, setMinValue ] = useState(Number)
+    const [ maxValue, setMaxValue ] = useState(Number)
     const { height, width } = useWindowDimensions();
 
+    function getMinMax( data: string[]){
+    }
 
     useEffect(() => {
         if (startDate !== "" && endDate !== "") 
             fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
                 result.json().then((data) => {
                     setData(data);
+
+
+                    let values = new Array()
+                    let max = 0;
+                    let min = 100;
+
+                    data.map((element)=> {
+                        const val = element["load"]
+                        if ( val > max )
+                            max = val
+                        if ( val <  min )
+                            min = val
+                    })
+                    
+                    setMaxValue(max + 0.25)
+                    setMinValue(min - 0.25)
                 });
             });;
-    }, [startDate, endDate]);
+    }, [startDate, endDate, minValue, maxValue]);
 
     return (
         <div>
@@ -41,7 +61,7 @@ function Charts() {
                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
             >
                 <XAxis dataKey="time" />
-                <YAxis dataKey="load" domain={[0, 15]} />
+                <YAxis dataKey="load" domain={[minValue, maxValue]} />
                 <Line
                     type="monotone"
                     dataKey="load"
