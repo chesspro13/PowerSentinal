@@ -20,6 +20,7 @@ export function get_data(fctn: CallableFunction) {
                 '","MINUTE":"' + dateObj.getUTCMinutes() +
                 '","SECOND":"' + dateObj.getUTCSeconds() + '"'
 
+            var jsonOutput = '"DATETIME":"' + new Date().toISOString() + '"';
             let q = { Status: "Running" };
             stdout
                 .toString()

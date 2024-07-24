@@ -41,7 +41,8 @@ setInterval(() => {
                 key + '": "' + data[key] + '"'
             );
         });
-        databaseOperations.writeData(JSON.parse(prep));
+        if (process.env.MODE == "PRODUCTION")
+            databaseOperations.writeData(JSON.parse(prep));
     });
-    // if (process.env.MODE == "TESTING") databaseOperations.printLast();
+    if (process.env.MODE == "TESTING") databaseOperations.printLast();
 }, (interval !== undefined ? parseInt(interval) : defaultInterval) * 1000);

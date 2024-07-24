@@ -1,6 +1,6 @@
 {
   "name": "react_sentinal",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "type": "module",
   "scripts": {
@@ -8,10 +8,10 @@
     "build-react": "BUILD_PATH='./server_src/build' react-scripts build",
     "test-react": "react-scripts test",
     "eject": "react-scripts eject",
-    "dfstart": "tsx watch server_src/app.ts",
+    "start-express": "tsx watch server_src/app.ts",
     "start": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && node ./dist/app.js",
     "refresh-react": "BUILD_PATH='./dist/build' react-scripts build && node ./dist/app.js",
-    "build": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && mkdir ./dist/data",
+    "build": "BUILD_PATH='./dist/build' react-scripts build && npx tsc && mkdir -p ./dist/data",
     "test-build": "npm run build && node dist/app.js"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-scripts": "5.0.1",
+    "recharts": "^2.12.7",
     "tsx": "^4.16.2",
     "typescript": "^4.9.5",
     "web-vitals": "^2.1.4"
@@ -28,11 +29,13 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "@types/better-sqlite3": "^7.6.11",
+    "@types/d3": "^7.4.3",
     "@types/express": "^4.17.21",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@types/recharts": "^1.8.29",
     "nodemon": "^3.1.4",
     "ts-node": "^10.9.2"
   },

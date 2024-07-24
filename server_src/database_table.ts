@@ -1,12 +1,7 @@
 export const databaseTable = `
     CREATE TABLE IF NOT EXISTS power_data (
     ID INTEGER PRIMARY KEY AUTOINCREMENT,
-    YEAR INTEGER,
-    MONTH INTEGER,
-    DAY INTEGER,
-    HOUR INTEGER,
-    MINUTE INTEGER,
-    SECOND INTEGER,
+    DATETIME TEXT,
     APC TEXT,
     DATE TEXT,
     HOSTNAME TEXT,
@@ -48,12 +43,7 @@ export const databaseTable = `
 `;
 
 export const preparedJson = `{
-    "YEAR": null,
-    "MONTH": null,
-    "DAY": null,
-    "HOUR": null,
-    "MINUTE": null,
-    "SECOND": null,
+    "DATETIME": null,
     "APC": null,
     "DATE": null,
     "HOSTNAME": null,
@@ -96,12 +86,7 @@ export const preparedJson = `{
 export const prepareDataInsert = `
     INSERT INTO power_data VALUES(
     null,
-    :YEAR,
-    :MONTH,
-    :DAY,
-    :HOUR,
-    :MINUTE,
-    :SECOND,
+    :DATETIME,
     :APC,
     :DATE,
     :HOSTNAME,
