@@ -12,9 +12,6 @@ function Charts() {
     const [ maxValue, setMaxValue ] = useState(Number)
     const { height, width } = useWindowDimensions();
 
-    function getMinMax( data: string[]){
-    }
-
     useEffect(() => {
         if (startDate !== "" && endDate !== "") 
             fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
@@ -38,7 +35,7 @@ function Charts() {
                     setMinValue(min - 0.25)
                 });
             });;
-    }, [startDate, endDate, minValue, maxValue]);
+    }, [startDate, endDate]);
 
     return (
         <div>
