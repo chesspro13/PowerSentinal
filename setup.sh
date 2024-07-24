@@ -9,9 +9,16 @@ fi
 
 source .env
 
+dir=$PWD
+subD=${dir//"/home/"/}
+user=${subD%%\/*}
+
 serverPackages()
 {
+    ./uninstall 
+
     echo "The following packages are required for opperation: APCUPSD, NVM"
+
     read -p "Begin the installation of dependencies? [Y/n]: " answer
     
     answer="${answer:-Y}"
@@ -33,9 +40,6 @@ serverPackages()
         if [[ $answer =~ [Yy] ]]; then    
             npm run build
 
-            dir=$PWD
-            subD=${dir//"/home/"/}
-            user=${subD%%\/*}
             setupService "/home/$user/.nvm/versions/node/v$NODE_VERSION/bin/node  $PWD/dist/app.js"
         fi
         
@@ -46,6 +50,8 @@ serverPackages()
             ufw allow "$WEB_PORT/tcp"
         fi
     fi
+
+    chown -R $user:$user ../{PWD##*/} 
 }
 
 setupService() {
@@ -89,6 +95,14 @@ setupService() {
     fi
 }
 
+serverInstall() {
+    if [[ $@ =~ '-y' ]] ; then
+        
+    else 
+        serverPackages
+    fi
+}
+
 startFromScratch() {
     read -p "Choose installation method: [server/s] | [client/c] " choice
 
@@ -104,3 +118,4 @@ case $1 in
     client|C|c) setupService "$PWD/client_src/watcher.sh" ;;
     *) startFromScratch
 esac
+
