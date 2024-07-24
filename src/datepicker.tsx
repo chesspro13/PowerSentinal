@@ -40,18 +40,18 @@ function DatePicker(props: props) {
     }, []);
 
     useEffect(() => {
-        if (props.range == "early") {
-            if (earliestDate != "" && date != earliestDate) {
+        if (props.range === "early") {
+            if (earliestDate !== "" && date !== earliestDate) {
                 setDate((earliestDate).split("T")[0]);
                 props.setDate((earliestDate).split("T")[0]);
             }
-        } else if (props.range == "late") {
-            if (latestDate != "" && date != latestDate) {
+        } else if (props.range === "late") {
+            if (latestDate !== "" && date !== latestDate) {
                 setDate((latestDate).split("T")[0]);
                 props.setDate((latestDate).split("T")[0]);
             }
         }
-    }, [earliestDate, latestDate]);
+    }, [earliestDate, latestDate, date, props]);
 
     return (
         <div style={{ display: "flex" }}>

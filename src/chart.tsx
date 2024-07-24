@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { LineChart, XAxis, CartesianGrid, Line, YAxis } from "recharts";
+import { useState, useEffect } from "react";
+import { LineChart, XAxis, Line, YAxis } from "recharts";
 import DatePicker from "./datepicker";
 import React from "react";
 
@@ -8,16 +8,14 @@ function Charts() {
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
 
-    function updateData() {
-        fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
-            result.json().then((data) => {
-                setData(data);
-            });
-        });
-    }
 
     useEffect(() => {
-        if (startDate != "" && endDate != "") updateData();
+        if (startDate !== "" && endDate !== "") 
+            fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+                result.json().then((data) => {
+                    setData(data);
+                });
+            });;
     }, [startDate, endDate]);
 
     return (
