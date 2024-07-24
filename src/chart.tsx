@@ -11,16 +11,14 @@ function Charts() {
     const [endDate, setEndDate] = useState("");
     const { height, width } = useWindowDimensions();
 
-    function updateData() {
-        fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
-            result.json().then((data) => {
-                setData(data);
-            });
-        });
-    }
 
     useEffect(() => {
-        if (startDate != "" && endDate != "") updateData();
+        if (startDate !== "" && endDate !== "") 
+            fetch("/api/load/range/" + startDate + "/" + endDate).then((result) => {
+                result.json().then((data) => {
+                    setData(data);
+                });
+            });;
     }, [startDate, endDate]);
 
     return (

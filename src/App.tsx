@@ -2,7 +2,7 @@ import "./App.css";
 import Aside from "./Aside";
 import Header from "./Header";
 import * as React from "react";
-import Charts from "./chartjs";
+import Charts from "./chart";
 
 function App() {
 
