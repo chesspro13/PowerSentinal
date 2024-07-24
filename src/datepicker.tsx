@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { utcToLocal } from "./date";
 import "./datepicker.css";
+import React from "react";
 
 interface props {
     description: string;
@@ -23,13 +23,13 @@ function DatePicker(props: props) {
 
     function getLatestDate() {
         const today = new Date();
-        let maxDate = today.getUTCFullYear() + "-";
-        if (today.getUTCMonth() < 10)
-            maxDate += "0" + (today.getUTCMonth() + 1);
-        else maxDate += today.getUTCMonth() + 1;
+        let maxDate = today.getFullYear() + "-";
+        if (today.getMonth() < 10)
+            maxDate += "0" + (today.getMonth() + 1);
+        else maxDate += today.getMonth() + 1;
         maxDate += "-";
-        if (today.getUTCDate() < 10) maxDate += "0" + today.getUTCDate();
-        else maxDate += today.getUTCDate();
+        if (today.getDate() < 10) maxDate += "0" + today.getDate();
+        else maxDate += today.getDate();
         maxDate += "T23:59:59.999Z";
         setLatestDate(maxDate);
     }
@@ -42,13 +42,13 @@ function DatePicker(props: props) {
     useEffect(() => {
         if (props.range == "early") {
             if (earliestDate != "" && date != earliestDate) {
-                setDate(utcToLocal(earliestDate).split("T")[0]);
-                props.setDate(utcToLocal(earliestDate).split("T")[0]);
+                setDate((earliestDate).split("T")[0]);
+                props.setDate((earliestDate).split("T")[0]);
             }
         } else if (props.range == "late") {
             if (latestDate != "" && date != latestDate) {
-                setDate(utcToLocal(latestDate).split("T")[0]);
-                props.setDate(utcToLocal(latestDate).split("T")[0]);
+                setDate((latestDate).split("T")[0]);
+                props.setDate((latestDate).split("T")[0]);
             }
         }
     }, [earliestDate, latestDate]);
@@ -59,15 +59,12 @@ function DatePicker(props: props) {
             <input
                 type="date"
                 value={date}
-                // min={earliestDate}
-                // max={maxDate}
+                min={earliestDate}
+                max={latestDate}
                 onChange={(newValue) => {
-                    console.log("Changed: " + newValue.target.value);
                     setDate(newValue.target.value);
                     props.setDate(newValue.target.value);
                 }}
-                name="ksdjf"
-                id="KDFLJ"
             />
         </div>
     );
