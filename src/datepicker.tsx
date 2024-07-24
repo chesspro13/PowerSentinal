@@ -51,7 +51,7 @@ function DatePicker(props: props) {
                 props.setDate((latestDate).split("T")[0]);
             }
         }
-    }, [earliestDate, latestDate, date, props]);
+    }, [earliestDate, latestDate]);
 
     return (
         <div style={{ display: "flex" }}>
