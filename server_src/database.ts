@@ -64,8 +64,11 @@ function getAtResolution( data: any[], segments: number)
         else
             date = new Date(data[data.length - 1]["DATETIME"])
         console.log( average.length)
-        if (average.length != 0)
-            cleanData.push({ time: utcToLocal(date.toISOString()), load: average.reduce((a, b) => a + b) / average.length });
+        if (average.length != 0){
+            const load = Math.round((average.reduce((a, b) => a + b) / average.length + Number.EPSILON) * 100) 
+
+            cleanData.push({ time: utcToLocal(date.toISOString()), load: load });
+        }
         average = []
     }
     return cleanData
