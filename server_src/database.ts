@@ -10,6 +10,7 @@ const db = new Database("./dist/data/power_data.db");
 db.pragma("journal_mode = WAL");
 db.exec(databaseTable);
 console.log("Database loaded.");
+const VA_RATING = process.env.VA_RATING || "1500";
 
 export function getAll() {
     const query = "SELECT * FROM power_data ORDER BY id DESC";
@@ -56,8 +57,9 @@ export function getLoadInRange(
     data.forEach((item: JSON | unknown) => {
         const s = JSON.stringify(item);
         const load = JSON.parse(s)["LOADPCT"];
+        const amperage = (parseInt(VA_RATING) * (parseInt(load)/100) )/120
         const date = new Date(JSON.parse(s)["DATETIME"]);
-        cleanData.push({ time: utcToLocal(date.toISOString()), load: load });
+        cleanData.push({ time: utcToLocal(date.toISOString()), load: amperage });
     });
     return cleanData;
 }

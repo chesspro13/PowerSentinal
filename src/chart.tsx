@@ -41,7 +41,7 @@ function Charts() {
                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
             >
                 <XAxis dataKey="time" />
-                <YAxis dataKey="load" domain={[30, 60]} />
+                <YAxis dataKey="load" domain={[0, 15]} />
                 <Line
                     type="monotone"
                     dataKey="load"
