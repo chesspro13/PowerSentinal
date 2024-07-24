@@ -63,7 +63,6 @@ export function getLoadInRange(
 }
 
 export function getLoad(): number[] | unknown {
-    console.log("Getting load data");
     const query = "SELECT LOADPCT, DATETIME FROM power_data ORDER BY id ASC;";
     const data = db.prepare(query).all();
 

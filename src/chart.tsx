@@ -1,12 +1,15 @@
-import { useState, useEffect } from "react";
-import { LineChart, XAxis, Line, YAxis } from "recharts";
+import { useState, useEffect, useCallback } from "react";
+import { LineChart, XAxis, CartesianGrid, Line, YAxis } from "recharts";
+import useWindowDimensions from "./window_dimensions";
 import DatePicker from "./datepicker";
 import React from "react";
+import { contourDensity } from "d3";
 
 function Charts() {
     const [data, setData] = useState([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const { height, width } = useWindowDimensions();
 
 
     useEffect(() => {
@@ -24,17 +27,17 @@ function Charts() {
                 <DatePicker
                     range="early"
                     setDate={setStartDate}
-                    description="Start range "
+                    description="Starting date "
                 />
                 <DatePicker
                     range="late"
                     setDate={setEndDate}
-                    description="End range "
+                    description="Ending date "
                 />
             </div>
             <LineChart
-                width={600}
-                height={400}
+                width={width * 0.75}
+                height={height * 0.75}
                 data={data}
                 margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
             >
