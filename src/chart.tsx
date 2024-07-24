@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from "react";
-import { LineChart, XAxis, CartesianGrid, Line, YAxis } from "recharts";
+import { useState, useEffect } from "react";
+import { LineChart, XAxis, Line, YAxis } from "recharts";
 import useWindowDimensions from "./window_dimensions";
 import DatePicker from "./datepicker";
 import React from "react";
