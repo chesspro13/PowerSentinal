@@ -1,0 +1,42 @@
+.control-bar {
+  display: flex;
+  justify-content: space-around;
+}
+
+.control-bar div {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.line-toggles label input {
+  padding-left: 0;
+  align-items: start;
+  margin-left: 0;
+  padding-left: 0;
+  width: fit-content;
+}
+
+.date-pickers {
+  text-align: center;
+}
+
+.resolution-slider {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
+.metadata {
+  display: inline-flex;
+}
+
+.metadata-data {
+  text-align: center;
+}
