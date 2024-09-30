@@ -106,7 +106,7 @@ startFromScratch() {
 
     case $choice in
         server|S|s) serverPackages ;;
-        client|C|c) setupService "$PWD/client_src/watcher.sh" ;;
+        client|C|c) setupService "$PWD/watcher.sh" ;;
         *) echo "Invalid option" ;;
     esac
 }
