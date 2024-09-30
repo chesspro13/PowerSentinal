@@ -55,6 +55,8 @@ serverPackages()
 
 setupService() {
     choice=$(getUserinput "Would you like to setup a systemd service?")
+
+    apt-get -y install jq
     if [[ $choice =~ [Yy] ]]; then        
         service="[Unit]
             \nDescription=Watch up status to gracefully shutdown in case of prolonged power outage.
@@ -129,6 +131,6 @@ elif [[ $server_install == false &&  $client_install == false ]] ; then
 elif [[ $server_install == true &&  $client_install == false ]] ; then 
     serverPackages
 elif [[ $server_install == false &&  $client_install == true ]] ; then 
-    setupService "$PWD/client_src/watcher.sh"
+    setupService "$PWD/watcher.sh"
 fi
 
