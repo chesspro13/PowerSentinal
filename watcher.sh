@@ -23,8 +23,23 @@ do
                 echo "Simulating shutdown event!"
             elif [[ $MODE == "PRODUCTION" ]]; then
                 # TODO: Add external shutdown scripts for fine tuned control
-                echo "Shutting down!"
-                shutdown now
+                if [[ $CEPH_ROLE == "MANAGER" ]]; then
+                    ceph osd set noout
+                    ceph osd set nobackfill
+                    ceph osd set norecover
+                    ceph osd set norebalance
+                    ceph osd set nodown
+                    ceph osd set pause
+
+                    echo "Shutting down!"
+                    shutdown now
+                elif [[ $CEPH_ROLE == "NODE" ]]; then
+                    echo "Shutting down!"
+                    shutdown +1
+                else
+                    echo "Shutting down!"
+                    shutdown now
+                fi
             else 
                 echo "OPERATION MODE NOT CONFIGURED CORRECTLY"
             fi
